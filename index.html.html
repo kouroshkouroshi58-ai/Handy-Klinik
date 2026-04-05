@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handy Klinik Bochum | Display-Reparatur, Akku & mehr</title>
+  <meta name="description" content="Handy Klinik Bochum – Schnelle Smartphone-Reparatur, faire Preise, Garantie. Display, Akku, Ladebuchse & Wasserschaden. Kortumstraße 34.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#080b10;--bg2:#0c1017;--bg3:#111620;--bg4:#161c28;
+      --blue:#3b82f6;--blue-b:#60a5fa;--blue-d:#1d4ed8;--blue-glow:rgba(59,130,246,.08);--blue-glow2:rgba(59,130,246,.04);
+      --cyan:#22d3ee;--cyan-glow:rgba(34,211,238,.06);
+      --white:#f0f4f8;--light:#b0bec5;--muted:#5a6a7a;--dim:#3a4550;
+      --bdr:rgba(59,130,246,.08);--bdr2:rgba(255,255,255,.04);
+      --fm:'Instrument Sans',system-ui,sans-serif;--fc:'Space Mono',monospace;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--fm);background:var(--bg);color:var(--light);line-height:1.6;overflow-x:hidden}
+
+    body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+    /* Grid background */
+    .grid-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.03;background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);background-size:60px 60px}
+
+    /* Animations */
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .reveal-l{opacity:0;transform:translateX(-44px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .reveal-r{opacity:0;transform:translateX(44px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .reveal-s{opacity:0;transform:scale(.88);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .v{opacity:1!important;transform:none!important}
+    .stagger>.c{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+    .stagger.v>.c:nth-child(1){transition-delay:0s}.stagger.v>.c:nth-child(2){transition-delay:.1s}.stagger.v>.c:nth-child(3){transition-delay:.2s}.stagger.v>.c:nth-child(4){transition-delay:.3s}.stagger.v>.c:nth-child(5){transition-delay:.4s}.stagger.v>.c:nth-child(6){transition-delay:.5s}
+    .stagger.v>.c{opacity:1;transform:translateY(0)}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;transition:.5s}
+    nav.scrolled{background:rgba(8,11,16,.94);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--bdr)}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{width:32px;height:32px;border:2px solid var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.3s}
+    .logo:hover .logo-icon{background:var(--blue);border-color:var(--blue)}
+    .logo-text{font-weight:700;font-size:.95rem;color:var(--white);letter-spacing:.02em}
+    .logo-text span{color:var(--blue)}
+    .nav-links{display:flex;gap:32px;list-style:none}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:.3s;position:relative}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:50%;width:0;height:2px;background:var(--blue);transition:.3s;transform:translateX(-50%);border-radius:1px}
+    .nav-links a:hover{color:var(--white)}
+    .nav-links a:hover::after{width:100%}
+    .nav-cta{padding:10px 24px;background:var(--blue);color:var(--white);font-family:var(--fm);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:0;border-radius:6px;cursor:pointer;text-decoration:none;transition:.3s;position:relative;overflow:hidden}
+    .nav-cta::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transition:.5s}
+    .nav-cta:hover{background:var(--blue-b);transform:translateY(-1px);box-shadow:0 8px 24px rgba(59,130,246,.25)}
+    .nav-cta:hover::before{left:100%}
+    .hamburger{display:none;background:0 0;border:0;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hamburger span{width:20px;height:1.5px;background:var(--white);transition:.3s}
+
+    section{padding:140px 48px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
+
+    /* Hero */
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:28px;padding:8px 20px;border:1px solid var(--bdr);border-radius:99px;background:var(--blue-glow2);animation:fadeIn 1s ease .2s both}
+    .hero-badge .pulse{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,211,238,.4)}50%{opacity:.8;box-shadow:0 0 0 8px rgba(34,211,238,0)}}
+    .hero h1{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;color:var(--white);line-height:1.05;letter-spacing:-.03em;margin-bottom:24px}
+    .hero h1 .hl{display:block;animation:fadeIn .8s ease both}
+    .hero h1 .hl:nth-child(1){animation-delay:.3s}
+    .hero h1 .hl:nth-child(2){animation-delay:.5s}
+    .hero h1 .hl:nth-child(3){animation-delay:.7s}
+    .hero h1 .gradient{background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-desc{font-size:1.1rem;color:var(--muted);max-width:480px;margin:0 auto 44px;line-height:1.8;animation:fadeIn 1s ease .9s both}
+    .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeIn 1s ease 1.1s both}
+    .btn-blue{padding:16px 40px;background:var(--blue);color:var(--white);font-family:var(--fm);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:0;border-radius:8px;cursor:pointer;text-decoration:none;transition:.4s;position:relative;overflow:hidden}
+    .btn-blue::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:.6s}
+    .btn-blue:hover{background:var(--blue-b);transform:translateY(-2px);box-shadow:0 12px 36px rgba(59,130,246,.2)}
+    .btn-blue:hover::before{left:100%}
+    .btn-glass{padding:16px 40px;background:rgba(255,255,255,.03);color:var(--white);font-family:var(--fm);font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--bdr2);border-radius:8px;cursor:pointer;text-decoration:none;transition:.4s;backdrop-filter:blur(4px)}
+    .btn-glass:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+    .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeIn 1s ease 1.5s both}
+    .hero-scroll span{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+    .scroll-dot{width:4px;height:4px;background:var(--blue);border-radius:50%;animation:scrollBounce 2s ease infinite}
+    .scroll-track{width:1px;height:32px;background:var(--dim);position:relative;overflow:hidden;border-radius:1px}
+    .scroll-track::after{content:'';position:absolute;top:-100%;width:100%;height:50%;background:var(--blue);animation:scrollMove 2s ease infinite}
+    @keyframes scrollMove{0%{top:-50%}100%{top:100%}}
+
+    @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Stats ticker */
+    .stats-bar{display:flex;justify-content:center;gap:0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);background:var(--bg2)}
+    .stat-item{flex:1;text-align:center;padding:28px 20px;border-right:1px solid var(--bdr);transition:.3s}
+    .stat-item:last-child{border-right:0}
+    .stat-item:hover{background:var(--blue-glow2)}
+    .stat-num{font-family:var(--fc);font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:4px}
+    .stat-num .accent{color:var(--blue)}
+    .stat-txt{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+
+    .label{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .label::before{content:'';width:16px;height:2px;background:var(--blue);border-radius:1px}
+    .heading{font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:24px}
+
+    /* Services */
+    .srv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:48px}
+    .srv-card{padding:32px;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;transition:.5s;position:relative;overflow:hidden}
+    .srv-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));transform:scaleX(0);transform-origin:left;transition:.5s}
+    .srv-card:hover{border-color:rgba(59,130,246,.2);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+    .srv-card:hover::before{transform:scaleX(1)}
+    .srv-icon{width:48px;height:48px;background:var(--blue-glow);border:1px solid var(--bdr);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;transition:.3s}
+    .srv-card:hover .srv-icon{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.3);transform:rotate(-5deg) scale(1.05)}
+    .srv-name{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:8px}
+    .srv-desc{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+    .srv-meta{font-family:var(--fc);font-size:.75rem;color:var(--blue);display:flex;justify-content:space-between}
+
+    /* About */
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+    .about-text p{font-size:1rem;color:var(--light);line-height:1.9;margin-bottom:20px}
+    .about-text .callout{padding:24px 28px;border-left:3px solid var(--blue);background:var(--blue-glow);border-radius:0 8px 8px 0;margin:32px 0;font-weight:500;color:var(--white);transition:.3s}
+    .about-text .callout:hover{transform:translateX(6px);background:rgba(59,130,246,.12)}
+    .trust-badges{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .trust-badge{padding:24px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;text-align:center;transition:.4s}
+    .trust-badge:hover{border-color:rgba(59,130,246,.2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+    .trust-icon{font-size:1.6rem;margin-bottom:10px}
+    .trust-val{font-family:var(--fc);font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:4px}
+    .trust-txt{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+    /* Process */
+    .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;position:relative}
+    .process-steps::before{content:'';position:absolute;top:36px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--bdr),var(--blue),var(--bdr),transparent)}
+    .step{text-align:center;padding:0 16px;position:relative}
+    .step-num{width:40px;height:40px;background:var(--bg3);border:2px solid var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fc);font-size:.8rem;font-weight:700;color:var(--blue);margin:0 auto 20px;position:relative;z-index:1;transition:.4s}
+    .step:hover .step-num{background:var(--blue);color:var(--white);box-shadow:0 0 20px rgba(59,130,246,.3)}
+    .step-title{font-size:.85rem;font-weight:700;color:var(--white);margin-bottom:6px}
+    .step-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+    /* Hours */
+    .hrs-section{text-align:center}
+    .hrs-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:48px}
+    .hrs-block{padding:24px 24px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;text-align:center;min-width:110px;flex:1;transition:.4s}
+    .hrs-block:hover{border-color:rgba(59,130,246,.2);background:var(--bg3);transform:translateY(-3px)}
+    .hrs-day{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .hrs-time{font-family:var(--fc);font-size:1.1rem;color:var(--white)}
+    .hrs-time.closed{color:var(--muted);font-family:var(--fm);font-size:.85rem}
+
+    /* Reviews */
+    .rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:48px}
+    .rev{padding:32px;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;transition:.5s;position:relative;overflow:hidden}
+    .rev::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:.6s}
+    .rev:hover{border-color:rgba(59,130,246,.15);transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+    .rev:hover::after{width:100%}
+    .rev-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .rev-stars{color:var(--blue);font-size:.85rem;letter-spacing:2px}
+    .rev-src{font-size:.65rem;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border:1px solid var(--bdr);border-radius:4px}
+    .rev-body{font-size:.92rem;color:var(--light);line-height:1.7;margin-bottom:20px}
+    .rev-name{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+    /* Booking */
+    .bk-wrap{background:var(--bg2);border:1px solid var(--bdr);border-radius:16px;padding:64px;position:relative;overflow:hidden}
+    .bk-wrap::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,var(--blue-glow) 0%,transparent 70%);pointer-events:none}
+    .bk-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:48px}
+    .fg{margin-bottom:24px}
+    .fg label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;transition:.3s}
+    .fg input,.fg select,.fg textarea{width:100%;padding:14px 16px;background:rgba(255,255,255,.02);border:1px solid var(--bdr);border-radius:8px;color:var(--white);font-family:var(--fm);font-size:.9rem;outline:0;transition:.3s}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+    .fg:focus-within label{color:var(--blue)}
+    .fg input::placeholder,.fg textarea::placeholder{color:var(--dim)}
+    .fg select option{background:var(--bg);color:var(--white)}
+    .fr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .sub-btn{width:100%;padding:16px;background:var(--blue);color:var(--white);font-family:var(--fm);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;border:0;border-radius:8px;cursor:pointer;transition:.4s;margin-top:8px;position:relative;overflow:hidden}
+    .sub-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:.6s}
+    .sub-btn:hover{background:var(--blue-b);transform:translateY(-2px);box-shadow:0 12px 36px rgba(59,130,246,.25)}
+    .sub-btn:hover::before{left:100%}
+    .suc-msg{display:none;padding:20px;margin-top:16px;border:1px solid var(--blue);border-radius:8px;color:var(--blue);text-align:center;font-size:.9rem;background:var(--blue-glow);animation:fadeIn .4s ease}
+    .suc-msg.show{display:block}
+    .bk-aside h3{font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:16px}
+    .bk-aside p{font-size:.88rem;color:var(--muted);line-height:1.8;margin-bottom:32px}
+    .inf{padding:18px 0;border-top:1px solid var(--bdr);transition:.3s}
+    .inf:hover{padding-left:8px}
+    .inf-l{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+    .inf-v{font-size:.9rem;color:var(--white);line-height:1.6}
+    .inf-v a{color:var(--white);text-decoration:none;transition:.3s}
+    .inf-v a:hover{color:var(--blue)}
+
+    /* Map */
+    .map-w{border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-top:48px}
+    .map-w iframe{width:100%;height:300px;border:0;filter:grayscale(.8) brightness(.5) contrast(1.3) hue-rotate(180deg);transition:.5s}
+    .map-w:hover iframe{filter:grayscale(.4) brightness(.65) contrast(1.1) hue-rotate(180deg)}
+
+    /* Footer */
+    footer{text-align:center;padding:80px 48px 48px;border-top:1px solid var(--bdr);position:relative;z-index:1}
+    footer::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:40px;height:3px;background:var(--blue);border-radius:2px}
+    .f-logo{font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:12px}
+    .f-logo span{color:var(--blue)}
+    .f-text{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:28px}
+    .f-text a{color:var(--blue);text-decoration:none}
+    .f-copy{font-size:.68rem;color:var(--dim);opacity:.5}
+
+    @media(max-width:768px){
+      nav{padding:16px 20px}nav.scrolled{padding:12px 20px}.nav-links{display:none}.hamburger{display:flex}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:rgba(8,11,16,.97);padding:24px 20px;gap:20px;backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr)}
+      section{padding:100px 20px}.about-grid{grid-template-columns:1fr;gap:40px}
+      .bk-wrap{padding:28px 20px;border-radius:12px}.bk-grid{grid-template-columns:1fr;gap:36px}.fr{grid-template-columns:1fr}
+      .hero-btns{flex-direction:column;align-items:center}
+      .process-steps{grid-template-columns:1fr 1fr;gap:24px}.process-steps::before{display:none}
+      .hrs-block{min-width:85px;padding:16px 12px}.stat-item{padding:20px 12px}
+      .hero-scroll{display:none}.stats-bar{flex-wrap:wrap}
+      .trust-badges{grid-template-columns:1fr 1fr;gap:8px}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal,.reveal-l,.reveal-r,.reveal-s{opacity:1;transform:none}.stagger>.c{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <nav id="navbar">
+    <a href="#" class="logo">
+      <div class="logo-icon">+</div>
+      <div class="logo-text">Handy<span>Klinik</span></div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Reparatur</a></li>
+      <li><a href="#about">Über uns</a></li>
+      <li><a href="#process">So läuft's</a></li>
+      <li><a href="#reviews">Bewertungen</a></li>
+    </ul>
+    <a href="#termin" class="nav-cta">Reparatur anfragen</a>
+    <button class="hamburger" id="hamburger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge"><span class="pulse"></span> Kortumstraße 34 · Bochum Innenstadt</div>
+    <h1>
+      <span class="hl">Dein Handy.</span>
+      <span class="hl"><span class="gradient">Unsere Diagnose.</span></span>
+      <span class="hl">Schnell repariert.</span>
+    </h1>
+    <p class="hero-desc">Display kaputt? Akku leer? Ladebuchse defekt? Wir reparieren dein Smartphone – schnell, fair und mit Garantie.</p>
+    <div class="hero-btns">
+      <a href="#termin" class="btn-blue">Reparatur anfragen</a>
+      <a href="tel:023479494296" class="btn-glass">0234 79494296</a>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-track"></div>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num" data-count="15">0</div><div class="stat-txt">Min. Reparatur</div></div>
+    <div class="stat-item"><div class="stat-num"><span class="accent">6</span></div><div class="stat-txt">Monate Garantie</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="6">0</div><div class="stat-txt">Tage / Woche</div></div>
+    <div class="stat-item"><div class="stat-num"><span class="accent">4.5</span></div><div class="stat-txt">Google Rating</div></div>
+  </div>
+
+  <section id="services">
+    <div style="text-align:center" class="reveal">
+      <p class="label">Was wir reparieren</p>
+      <h2 class="heading">Unsere Leistungen</h2>
+    </div>
+    <div class="srv-grid stagger">
+      <div class="srv-card c">
+        <div class="srv-icon">📱</div>
+        <div class="srv-name">Display-Reparatur</div>
+        <div class="srv-desc">Gesprungenes Glas, defekter Touchscreen oder LCD-Schaden – wir tauschen dein Display aus.</div>
+        <div class="srv-meta"><span>ab 15 Min.</span><span>Mit Garantie</span></div>
+      </div>
+      <div class="srv-card c">
+        <div class="srv-icon">🔋</div>
+        <div class="srv-name">Akku-Tausch</div>
+        <div class="srv-desc">Dein Handy hält keinen Tag mehr durch? Neuer Akku rein, wie neu wieder raus.</div>
+        <div class="srv-meta"><span>ab 30 Min.</span><span>Alle Marken</span></div>
+      </div>
+      <div class="srv-card c">
+        <div class="srv-icon">🔌</div>
+        <div class="srv-name">Ladebuchse</div>
+        <div class="srv-desc">Handy lädt nicht mehr? Oft reicht eine Reinigung, sonst tauschen wir die Buchse.</div>
+        <div class="srv-meta"><span>ab 15 Min.</span><span>Kostenlose Prüfung</span></div>
+      </div>
+      <div class="srv-card c">
+        <div class="srv-icon">💧</div>
+        <div class="srv-name">Wasserschaden</div>
+        <div class="srv-desc">Handy ins Wasser gefallen? Wir retten deine Daten und dein Gerät – wenn möglich.</div>
+        <div class="srv-meta"><span>24–72 Std.</span><span>Datenrettung</span></div>
+      </div>
+      <div class="srv-card c">
+        <div class="srv-icon">🛡️</div>
+        <div class="srv-name">Schutzfolien & Hüllen</div>
+        <div class="srv-desc">Panzerglas, Hüllen, Kabel und Zubehör für alle Modelle. Sofort zum Mitnehmen.</div>
+        <div class="srv-meta"><span>Sofort</span><span>Alle Marken</span></div>
+      </div>
+      <div class="srv-card c">
+        <div class="srv-icon">💻</div>
+        <div class="srv-name">Tablet & Laptop</div>
+        <div class="srv-desc">Nicht nur Handys – wir reparieren auch iPads, Tablets und Laptops.</div>
+        <div class="srv-meta"><span>Je nach Gerät</span><span>Kostenvoranschlag</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text reveal-l">
+        <p class="label">Wer wir sind</p>
+        <h2 class="heading">Dein Handy ist bei uns<br>in guten Händen.</h2>
+        <p>Wir sind die Handy Klinik Bochum – ein Team aus erfahrenen Technikern mitten in der Innenstadt. Seit Jahren reparieren wir Smartphones, Tablets und Laptops aller Marken.</p>
+        <div class="callout">Was andere Läden aufgeben, retten wir. Ob Wasserschaden, kaputtes Display oder defekte Ladebuchse – bei uns bekommst du eine ehrliche Diagnose und faire Preise.</div>
+        <p>Unsere Kunden schätzen besonders, dass wir transparent arbeiten: Du bekommst vorher einen Preis genannt, keine versteckten Kosten. Und auf jede Reparatur gibt's Garantie.</p>
+        <p>Du findest uns in der Kortumstraße 34 – direkt in der Bochumer City. Komm einfach vorbei, ruf an oder schick uns eine Anfrage.</p>
+      </div>
+      <div class="trust-badges stagger reveal-r">
+        <div class="trust-badge c"><div class="trust-icon">⚡</div><div class="trust-val">15 Min</div><div class="trust-txt">Express-Reparatur</div></div>
+        <div class="trust-badge c"><div class="trust-icon">🛡️</div><div class="trust-val">6 Mon.</div><div class="trust-txt">Garantie</div></div>
+        <div class="trust-badge c"><div class="trust-icon">💰</div><div class="trust-val">Fair</div><div class="trust-txt">Transparente Preise</div></div>
+        <div class="trust-badge c"><div class="trust-icon">📦</div><div class="trust-val">Hermes</div><div class="trust-txt">Paketannahme</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div style="text-align:center" class="reveal">
+      <p class="label">In 4 Schritten repariert</p>
+      <h2 class="heading">So läuft eine Reparatur</h2>
+    </div>
+    <div class="process-steps stagger">
+      <div class="step c"><div class="step-num">01</div><div class="step-title">Diagnose</div><div class="step-desc">Bring dein Gerät vorbei oder ruf an – wir prüfen den Schaden kostenlos.</div></div>
+      <div class="step c"><div class="step-num">02</div><div class="step-title">Angebot</div><div class="step-desc">Du bekommst sofort einen fairen Preis. Keine versteckten Kosten.</div></div>
+      <div class="step c"><div class="step-num">03</div><div class="step-title">Reparatur</div><div class="step-desc">Unser Team repariert dein Gerät – oft in unter einer Stunde.</div></div>
+      <div class="step c"><div class="step-num">04</div><div class="step-title">Abholung</div><div class="step-desc">Dein Handy ist fertig. Mit Garantie und wie neu.</div></div>
+    </div>
+  </section>
+
+  <section id="zeiten" class="hrs-section">
+    <div class="reveal">
+      <p class="label">Wann wir da sind</p>
+      <h2 class="heading">Öffnungszeiten</h2>
+    </div>
+    <div class="hrs-bar stagger">
+      <div class="hrs-block c"><div class="hrs-day">Mo</div><div class="hrs-time">9:30–19</div></div>
+      <div class="hrs-block c"><div class="hrs-day">Di</div><div class="hrs-time">9:30–19</div></div>
+      <div class="hrs-block c"><div class="hrs-day">Mi</div><div class="hrs-time">9:30–19</div></div>
+      <div class="hrs-block c"><div class="hrs-day">Do</div><div class="hrs-time">9:30–19</div></div>
+      <div class="hrs-block c"><div class="hrs-day">Fr</div><div class="hrs-time">9:30–19</div></div>
+      <div class="hrs-block c"><div class="hrs-day">Sa</div><div class="hrs-time">9:30–19</div></div>
+      <div class="hrs-block c"><div class="hrs-day">So</div><div class="hrs-time closed">Geschlossen</div></div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div style="text-align:center" class="reveal">
+      <p class="label">Echte Kundenstimmen</p>
+      <h2 class="heading">Das sagen unsere Kunden</h2>
+    </div>
+    <div class="rev-grid stagger">
+      <div class="rev c"><div class="rev-top"><div class="rev-stars">★★★★★</div><div class="rev-src">Google</div></div><p class="rev-body">„Display erneuert innerhalb 13 Minuten. Tiptop Arbeit und dazu eine Panzerglas geschenkt. Zum Weiterempfehlen!"</p><p class="rev-name">Bernhard S.</p></div>
+      <div class="rev c"><div class="rev-top"><div class="rev-stars">★★★★★</div><div class="rev-src">Google</div></div><p class="rev-body">„Mein Handy wurde schnell und unkompliziert innerhalb von 2 Stunden repariert. Preis/Leistung war mehr als ok!"</p><p class="rev-name">Nan Na X.</p></div>
+      <div class="rev c"><div class="rev-top"><div class="rev-stars">★★★★★</div><div class="rev-src">Google</div></div><p class="rev-body">„Super nett, super hilfsbereit und mein Problem wurde sofort gelöst. Tolles Preis-Leistungsverhältnis. 5 Sterne mit Recht!"</p><p class="rev-name">Marvin K.</p></div>
+      <div class="rev c"><div class="rev-top"><div class="rev-stars">★★★★★</div><div class="rev-src">Google</div></div><p class="rev-body">„Mein Handy hatte einen Wasserschaden. Andere sagten, es wäre nicht mehr zu retten. Die Handy Klinik hat es gerettet!"</p><p class="rev-name">Saskia Z.</p></div>
+      <div class="rev c"><div class="rev-top"><div class="rev-stars">★★★★★</div><div class="rev-src">Google</div></div><p class="rev-body">„Akkutausch für 35€ beim iPhone dauerte keine 30 Minuten. Funktioniert wieder wie beim Neukauf. Sehr freundliche Bedienung."</p><p class="rev-name">Roger S.</p></div>
+      <div class="rev c"><div class="rev-top"><div class="rev-stars">★★★★★</div><div class="rev-src">Google</div></div><p class="rev-body">„iPad und iPhone hingebracht – in nur 3 Stunden alles wie neu. Kann die Jungs echt nur empfehlen. 10/10!"</p><p class="rev-name">LX</p></div>
+    </div>
+  </section>
+
+  <section id="termin">
+    <div class="bk-wrap reveal-s">
+      <div style="text-align:center">
+        <p class="label">Gerät kaputt? Wir helfen.</p>
+        <h2 class="heading">Reparatur anfragen</h2>
+      </div>
+      <div class="bk-grid">
+        <form id="bForm">
+          <div class="fg"><label>Dein Name</label><input type="text" placeholder="Wie heißt du?" required></div>
+          <div class="fr"><div class="fg"><label>Telefon</label><input type="tel" placeholder="Deine Nummer" required></div><div class="fg"><label>E-Mail (optional)</label><input type="email" placeholder="Deine E-Mail"></div></div>
+          <div class="fg"><label>Gerät & Modell</label><input type="text" placeholder="z.B. iPhone 14 Pro, Samsung S23..." required></div>
+          <div class="fg"><label>Was ist kaputt?</label><select required><option value="" disabled selected>Wähle den Schaden</option><option>Display / Glas</option><option>Akku / Batterie</option><option>Ladebuchse</option><option>Wasserschaden</option><option>Kamera</option><option>Software-Problem</option><option>Anderes</option></select></div>
+          <div class="fg"><label>Beschreibung (optional)</label><textarea rows="2" placeholder="Erzähl uns kurz was passiert ist..."></textarea></div>
+          <button type="submit" class="sub-btn">Anfrage senden</button>
+          <div class="suc-msg" id="sucMsg">Anfrage erhalten! Wir melden uns schnellstmöglich bei dir.</div>
+        </form>
+        <div class="bk-aside">
+          <h3>Oder komm einfach vorbei</h3>
+          <p>Viele Reparaturen erledigen wir sofort – ohne Termin, ohne Wartezeit. Einfach Gerät mitbringen und wir schauen es uns an.</p>
+          <div class="inf"><div class="inf-l">Adresse</div><div class="inf-v">Kortumstraße 34<br>44787 Bochum</div></div>
+          <div class="inf"><div class="inf-l">Telefon</div><div class="inf-v"><a href="tel:023479494296">0234 79494296</a></div></div>
+          <div class="inf"><div class="inf-l">Zeiten</div><div class="inf-v">Mo – Sa: 09:30 – 19:00 Uhr<br>So: Geschlossen</div></div>
+          <div class="inf"><div class="inf-l">Auch noch</div><div class="inf-v">Hermes Paketannahme<br>Akku-Recycling</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="map-w reveal">
+      <iframe src="https://maps.google.com/maps?q=Kortumstra%C3%9Fe+34,+44787+Bochum&t=&z=16&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">Handy<span>Klinik</span> Bochum</div>
+    <p class="f-text">Kortumstraße 34 · 44787 Bochum<br><a href="tel:023479494296">0234 79494296</a></p>
+    <p class="f-copy">© 2025 Handy Klinik Bochum · Alle Rechte vorbehalten</p>
+  </footer>
+
+  <script>
+    const nb=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',window.scrollY>60));
+    document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+    document.querySelectorAll('.nav-links a').forEach(l=>l.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('v');
+          e.target.querySelectorAll('[data-count]').forEach(el=>{
+            const t=parseInt(el.dataset.count);let c=0;const step=Math.max(1,Math.ceil(t/30));
+            const timer=setInterval(()=>{c+=step;if(c>=t){c=t;clearInterval(timer)}el.textContent=c},40);
+          });
+        }
+      });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r,.reveal-s,.stagger,.stats-bar').forEach(el=>obs.observe(el));
+
+    document.getElementById('bForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('sucMsg').classList.add('show');e.target.reset();setTimeout(()=>document.getElementById('sucMsg').classList.remove('show'),5000)});
+
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){e.preventDefault();document.querySelector(this.getAttribute('href'))?.scrollIntoView({behavior:'smooth'})}));
+  </script>
+</body>
+</html>
